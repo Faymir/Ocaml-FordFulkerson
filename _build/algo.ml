@@ -20,17 +20,23 @@ let path_exist graph forbidden s p =
   let myfilter id notyet explored = 
     let a = myfind id notyet and b = myfind id explored in
     if a <> "" || b <> "" then
-      true
+      false (* ne pas ajouter cette valeur dans la nouvelle liste *)
     else
-      false
+      true  (* Oui cette valeur ne se trouve dans aucune liste donc ajoute la dans la nouvelle lisye filtrée*)
 
-  let rec boucle graph notyet explored goal = 
+  let print_list l =
+    printf "\nList beginning\n";
+    List.iter (fun x -> Printf.printf  " %s -> " x) l;
+    printf "\nList end\n"
+
+  let rec boucle graph notyet explored goal result = 
     match notyet with
     | [] -> ["Not_found"]
+    | ":" :: rest -> boucle graph rest explored goal (":" :: result)
     | first :: rest -> 
       let notyet = rest in
       printf "\nFirst = %s\t goal = %s\n" first goal;
-          if first = goal then [goal] 
+          if first = goal then goal :: result
           else 
             let successors = out_arcs graph first in
 
@@ -38,17 +44,27 @@ let path_exist graph forbidden s p =
             List.iter (fun (x,_) -> printf " %s -> " x) successors;
             printf "\nfin successors\n";
               let explored = first :: explored in
+
+
                 let successors = List.filter (fun (x,_) -> myfilter x notyet explored)  successors in
-                let notyet = List.append (List.map (fun (x,_) -> x) successors) (notyet) in
-                first :: (boucle graph notyet explored goal)
+                  (* printf "\n- successors --\n" ;
+                  List.iter (fun (x,_) -> printf " %s -> " x) successors;
+                  printf "\nfin successors\n";
+                  print_list explored; *)
+
+
+
+                  let notyet = List.append (List.map (fun (x,_) -> x) successors) (":" :: notyet) in
+                  boucle graph notyet explored goal (first :: result)
               
 let path_exist graph id1 id2 = 
     let notyet = [id1] and explored = [] in
-    boucle graph notyet explored id2
+    boucle graph notyet explored id2 []
 
 let print_path path =
-  List.iter (fun x -> Printf.printf  " %s -> " x) path; 
-  Printf.printf "\n";
+  List.iter (fun x -> Printf.printf  " %s <- " x) path; 
+  Printf.printf "\n"
+
   (*  
 
       - on quitte si on trouve la solution ou si on n'a plus de noeuds à exporer
