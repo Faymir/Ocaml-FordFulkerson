@@ -24,15 +24,26 @@ let path_exist graph forbidden s p =
     else
       true  (* Oui cette valeur ne se trouve dans aucune liste donc ajoute la dans la nouvelle lisye filtrée*)
 
-  let print_list l =
-    printf "\nList beginning\n";
-    List.iter (fun x -> Printf.printf  " %s -> " x) l;
-    printf "\nList end\n"
+  let print_list l str=
+    printf "\nBeginning %s\n" str;
+    List.iter (fun x -> Printf.printf  " %s <= " x) l;
+    printf "\nFIN %s\n" str
+  
+  let rec clean_result result nbr = 
+    match nbr with
+    | 0 -> result
+    | number -> if result = [] then [] else clean_result (List.tl result) (nbr - 1)
 
-  let rec boucle graph notyet explored goal result = 
+  let rec boucle graph notyet explored goal result nbr= 
+    print_list notyet "NotYet";
+    print_list explored "Explored";
+    print_list result "result";
     match notyet with
     | [] -> ["Not_found"]
-    | ":" :: rest -> boucle graph rest explored goal (":" :: result)
+    | ":" :: rest -> 
+        if nbr = 0 then boucle graph rest explored goal result 0
+        else boucle graph rest explored goal (("(" ^ (string_of_int nbr) ^ ")") :: result) 0
+        (* else boucle graph rest explored goal (clean_result result nbr) 0 *)
     | first :: rest -> 
       let notyet = rest in
       printf "\nFirst = %s\t goal = %s\n" first goal;
@@ -40,26 +51,29 @@ let path_exist graph forbidden s p =
           else 
             let successors = out_arcs graph first in
 
-            printf "\nDebut successors of %s\n" first;
-            List.iter (fun (x,_) -> printf " %s -> " x) successors;
-            printf "\nfin successors\n";
               let explored = first :: explored in
 
 
                 let successors = List.filter (fun (x,_) -> myfilter x notyet explored)  successors in
+                  (* let nbr = nbr + 1 in *)
+                  (* printf "\nDebut successors of %s\n" first;
+                  List.iter (fun (x,_) -> printf " %s -> " x) successors;
+                  printf "\nfin successors\n"; *)
                   (* printf "\n- successors --\n" ;
                   List.iter (fun (x,_) -> printf " %s -> " x) successors;
                   printf "\nfin successors\n";
                   print_list explored; *)
-
-
-
                   let notyet = List.append (List.map (fun (x,_) -> x) successors) (":" :: notyet) in
-                  boucle graph notyet explored goal (first :: result)
+
+                    (* print_list notyet "NotYet"; *)
+                  if successors <> [] then 
+                    boucle graph notyet explored goal ( ("(" ^ (string_of_int nbr) ^ ")") :: first :: result) 0
+                  else
+                    boucle graph notyet explored goal (first :: result) (nbr + 1)
               
 let path_exist graph id1 id2 = 
     let notyet = [id1] and explored = [] in
-    boucle graph notyet explored id2 []
+    boucle graph notyet explored id2 [] 0
 
 let print_path path =
   List.iter (fun x -> Printf.printf  " %s <- " x) path; 
