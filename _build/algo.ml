@@ -53,3 +53,19 @@ let path_exist graph id1 id2 =
 let print_path path =
   List.iter (fun x -> Printf.printf  " %s <- " x) path; 
   Printf.printf "\n"
+
+
+let remove_link graph id1 id2 =
+  let res = v_fold 
+    graph 
+    (fun acu id out -> 
+      if id = id1 then 
+        (id,List.filter(fun (x,_) -> x <> id2) (out)) :: acu 
+      else 
+        (id,out) :: acu
+    ) 
+    [] 
+  in
+  List.rev res
+
+(* let remove_path graph path = *)

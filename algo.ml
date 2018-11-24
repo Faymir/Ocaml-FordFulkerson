@@ -53,3 +53,62 @@ let path_exist graph id1 id2 =
 let print_path path =
   List.iter (fun x -> Printf.printf  " %s <- " x) path; 
   Printf.printf "\n"
+
+(* Remove only if arc is on path and if its flow of is less than, or equal to 0 *)
+let remove_link graph id1 id2 minval=
+  let res = v_fold 
+    graph 
+    (fun acu id out -> 
+      if id = id1 then 
+        let updated_flow_out = List.map(fun (x,lbl) -> if x = id2 then (x, lbl - minval) else (x,lbl)) (out) in
+          let filtered_out = List.filter(fun (x,lbl) -> lbl >0) (updated_flow_out) in
+          (id,filtered_out) :: acu 
+      else 
+        (id,out) :: acu
+    ) 
+    [] 
+  in
+  List.rev res
+
+let rec remove_path graph path minval=
+  match path with
+  | [] -> graph
+  | id :: [] -> graph
+  | id2 :: id1 :: rest -> remove_path ( 
+                                         remove_link graph id1 id2 minval 
+                                      ) 
+                                      (id1 :: rest) 
+                                      minval
+
+let rec calc_flow graph path acu first =
+  match path with
+  | [] -> acu
+  | id :: [] -> acu
+  | id2 :: id1 :: rest -> let value = find_arc graph id1 id2 in
+                            if value = None then 
+                              raise (Graph_error ("This Error From calc_flow lean to find_arc and path_exist Should Not Happen."))
+                            else
+                              let Some v = value in 
+                                if first = 0 then
+                                  calc_flow (graph) (id1::rest) (v) 1
+                                else if v < acu then
+                                  calc_flow (graph) (id1::rest) (v) 1
+                                else
+                                  calc_flow (graph) (id1::rest) (acu) 1
+
+let rec min_flow graph path =
+  calc_flow graph path 0 0
+
+let ford_ferguson_job acu graph path source sink = 
+  match path with
+  [] -> acu
+  p -> let flow = calc_flow graph p 0 0 in
+        let graph = remove_path graph p flow in
+          ford_ferguson (flow + acu) (graph) (path_exist graph source sink) source sink
+
+
+
+
+
+
+(* let gr = [("0",[("1", 16);("2", 13)]) ; ("1",[("2",10);("3", 12)]) ; ("2",[("1", 4);("4", 14)]) ; ("3",[("2", 9); ("5", 20)]) ; ("4",[("3", 7); ("5", 4)]) ; ("5",[])] ;; *)
