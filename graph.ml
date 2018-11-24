@@ -41,9 +41,21 @@ let v_iter gr f = List.iter (fun (id, out) -> f id out) gr
 
 let v_fold gr f acu = List.fold_left (fun acu (id, out) -> f acu id out) acu gr
 
-
-
 let rec map gr f = match gr with
   | [] -> []
   | (id, arcs) :: rest -> (id, ( List.map (fun (idd,x) -> (idd, f (x) )) arcs )) :: map rest f
 
+let update_arc gr id1 id2 minval =
+  let res = v_fold 
+    gr 
+    (fun acu id out -> 
+      if id = id1 then 
+        let updated_flow_out = List.map(fun (x,lbl) -> if x = id2 then (x, lbl - minval) else (x,lbl)) (out) in
+          let filtered_out = List.filter(fun (x,lbl) -> lbl >0) (updated_flow_out) in
+          (id,filtered_out) :: acu 
+      else 
+        (id,out) :: acu
+    ) 
+    [] 
+  in
+  List.rev res

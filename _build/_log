@@ -18,9 +18,9 @@ ocamlc.opt -c -g -o ftest.cmo ftest.ml # cached
 # Target: algo.ml.depends, tags: { debug, extension:ml, file:algo.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -modules algo.ml > algo.ml.depends # cached
 # Target: graph.ml.depends, tags: { debug, extension:ml, file:graph.ml, ocaml, ocamldep, quiet, traverse }
-ocamldep.opt -modules graph.ml > graph.ml.depends # cached
+ocamldep.opt -modules graph.ml > graph.ml.depends
 # Target: graph.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:graph.cmx, file:graph.ml, implem, native, ocaml, quiet, traverse }
-ocamlopt.opt -c -g -o graph.cmx graph.ml # cached
+ocamlopt.opt -c -g -o graph.cmx graph.ml
 # Target: algo.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:algo.cmx, file:algo.ml, implem, native, ocaml, quiet, traverse }
 ocamlopt.opt -c -g -o algo.cmx algo.ml # cached
 # Target: gfile.ml.depends, tags: { debug, extension:ml, file:gfile.ml, ocaml, ocamldep, quiet, traverse }
@@ -30,5 +30,5 @@ ocamlopt.opt -c -g -o gfile.cmx gfile.ml # cached
 # Target: ftest.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:ftest.cmx, file:ftest.ml, implem, native, ocaml, quiet, traverse }
 ocamlopt.opt -c -g -o ftest.cmx ftest.ml # cached
 # Target: ftest.native, tags: { debug, dont_link_with, extension:native, file:ftest.native, link, native, ocaml, program, quiet, traverse }
-ocamlopt.opt -g graph.cmx algo.cmx gfile.cmx ftest.cmx -o ftest.native # cached
+ocamlopt.opt -g graph.cmx algo.cmx gfile.cmx ftest.cmx -o ftest.native
 # Compilation successful.

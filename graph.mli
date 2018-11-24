@@ -41,6 +41,8 @@ val out_arcs: 'a graph -> id -> 'a out_arcs
 val find_arc: 'a graph -> id -> id -> 'a option
 
 
+val update_arc: int graph -> id -> id -> int -> int graph
+
 (**************  COMBINATORS, ITERATORS  **************)
 
 (* Iterate on all nodes.

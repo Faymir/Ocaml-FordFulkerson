@@ -22,5 +22,6 @@ type path = id list
 
 val path_exist: 'a graph -> id -> id -> path
 val print_path: path  -> unit
-val remove_path: 'a graph -> path -> int -> 'a graph
-val min_flow: 'a graph -> path -> int
+val update_path: int graph -> path -> int -> int graph
+val min_flow: int graph -> path -> int
+val ford_fulkerson:  string graph -> id -> id -> int
