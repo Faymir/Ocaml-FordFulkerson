@@ -99,14 +99,15 @@ let rec calc_flow graph path acu first =
 let rec min_flow graph path =
   calc_flow graph path 0 0
 
-let ford_ferguson_job acu graph path source sink = 
+let rec ford_ferguson_job acu graph path source sink = 
   match path with
-  [] -> acu
-  p -> let flow = calc_flow graph p 0 0 in
+  | [] -> acu
+  | p -> let flow = calc_flow graph p 0 0 in
         let graph = remove_path graph p flow in
-          ford_ferguson (flow + acu) (graph) (path_exist graph source sink) source sink
+          ford_ferguson_job (flow + acu) (graph) (path_exist graph source sink) source sink
 
-
+let ford_ferguson graph source sink =
+  ford_ferguson_job (0) (graph) (path_exist graph source sink) source sink
 
 
 
