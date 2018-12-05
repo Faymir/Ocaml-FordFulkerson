@@ -7,6 +7,7 @@ type path = string
 
 (* Values are read as strings. *)
 val from_file: path -> string graph
+val from_txt_file: path -> string graph
 
 (* Similarly, we write only a string graph.
  * Use Graph.map if necessary to prepare the input graph. *)

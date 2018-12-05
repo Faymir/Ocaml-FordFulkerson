@@ -17,12 +17,12 @@ let () =
   in
 
   (* Open file *)
-  let graph = Gfile.from_file infile in
-
+  let graph = Gfile.from_txt_file infile in
+  let () = Gfile.write_file "testGraph.txt" graph in
   (* Rewrite the graph that has been read. *)
   let () = Gfile.export outfile graph source sink in
-  let alpha = ford_fulkerson graph source sink in 
-  Printf.printf "%d\n" alpha;
+  let alpha = circulation_demand graph source sink in 
+  print_paths alpha;
   ()
 
 
