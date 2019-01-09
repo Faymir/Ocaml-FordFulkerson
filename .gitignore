@@ -1,4 +1,5 @@
-/_build
+/_build/
+/src/_build/
 /out/
 _tags
 *.native

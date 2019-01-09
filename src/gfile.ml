@@ -117,7 +117,7 @@ let from_file path =
   
   let  export path graph source sink= 
     (*let path :: _  = String.split_on_char('.') in*)
-    let ff = open_out path in
+    let ff = open_out ("../out/" ^ path) in
 
     (* Write in this file. *)
     fprintf ff "digraph result {\n\trankdir=LR;\n\tsource %s\n\tsink %s\n\tsize=\"8,5\"\n\tnode [shape = circle];\n" source sink;

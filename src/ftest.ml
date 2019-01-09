@@ -17,9 +17,7 @@ let () =
   in
 
   (* Open file *)
-  let graph = Gfile.from_txt_file infile in
-  let () = Gfile.write_file "testGraph.txt" graph in
-  (* Rewrite the graph that has been read. *)
+  let graph = Gfile.from_txt_file infile in 
   let () = Gfile.export outfile graph source sink in
   let alpha = circulation_demand graph source sink in 
   print_paths alpha;
