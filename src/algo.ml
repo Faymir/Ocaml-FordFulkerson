@@ -2,7 +2,7 @@ open Graph
 open Printf
 type path = id list
 
-(*Utilitaire:  Un find co=ustomisé qui retourne la valeur à recherchée si 
+(*Utilitaire:  Un find customisé qui retourne la valeur à recherchée si 
 celle ci est trouvée ou une chaine vide dans le cas contraire*)
 let myfind id mylist =  try (List.find (fun x -> x = id) mylist) with Not_found -> ""
 
@@ -51,7 +51,7 @@ let path_exist graph id1 id2 = boucle graph [id1] [] id2 []
 (*Utilitaire: afficher un chemin depuis l'extérieur du module*)
 let print_path path =     
  let path = List.rev path in
-  List.iter (fun x -> Printf.printf  " %s\t-> " x) path;   Printf.printf "end\n"
+  List.iter (fun x -> Printf.printf  "\t-> %s" x) path;   Printf.printf "\n"
 
 let rec print_paths paths = 
   let acu = 0 and paths = List.rev paths in
@@ -60,10 +60,6 @@ let rec print_paths paths =
       if flow > 0 then (Printf.printf  "Flow of %d can be applied in:" flow;  print_path path; acu + flow)
       else acu + flow)
     acu paths)
-
-let add_node_arc graph id1 id2 label =
-      add_arc graph id1 id2 label
-
 
 let rec update_path_inverse graph graph2 path minval=
   match path with
@@ -97,17 +93,7 @@ let rec calc_flow graph path acu first =
 let rec min_flow graph path =
   calc_flow graph path 0 0
 
-let ford_fulkerson graph source sink =
-  let rec algo acu graph path source sink = 
-    match path with
-    | [] -> acu
-    | p -> let flow = min_flow graph p in
-          let graph = update_path graph p flow in
-            algo (flow + acu) (graph) (path_exist graph source sink) source sink
-  in
-  algo (0) (map graph int_of_string) (path_exist graph source sink) source sink
-
-let rec circulation_demand_algo acu graph graph2 path source sink =
+let rec algorithm acu graph graph2 path source sink =
   let rec check_reverse acu graph path source sink = 
     match path with
     | [] -> acu
@@ -116,18 +102,24 @@ let rec circulation_demand_algo acu graph graph2 path source sink =
       check_reverse ((flow,p) :: acu) (graph) (path_exist graph source sink) source sink
   in
   match path with
-  | [] -> let () = Gfile.export ("graph2.dot") (map graph2 string_of_int) "0" "8"  in 
+  | [] -> (*let () = Gfile.export ("graph2.dot") (map graph2 string_of_int) "0" "8"  in *)
           check_reverse (acu) (graph2) (path_exist graph2 source sink) source sink
 
   | p -> let flow = min_flow graph p in
     let (graph,graph2) = update_path_inverse graph graph2 p flow in
-    circulation_demand_algo ((flow,p) :: acu) (graph) (graph2) (path_exist graph source sink) source sink
+    algorithm ((flow,p) :: acu) (graph) (graph2) (path_exist graph source sink) source sink
 
 
+let ford_fulkerson graph source sink =
+let graph = map graph int_of_string in
+  let paths = algorithm ([]) (graph) (graph) (path_exist graph source sink) source sink and acu = 0 in
+    (List.fold_left (fun acu (flow,_) ->  acu + flow) acu paths)
   
 let circulation_demand graph source sink = 
   let graph = map graph int_of_string in
-  circulation_demand_algo ([]) (graph) (graph) (path_exist graph source sink) source sink
+    let paths = algorithm ([]) (graph) (graph) (path_exist graph source sink) source sink in
+      let () = print_paths paths and acu = 0 in
+        (List.fold_left (fun acu (flow,_) ->  acu + flow) acu paths)
 
 
 

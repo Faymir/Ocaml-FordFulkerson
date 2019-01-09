@@ -3,3 +3,6 @@
 /out/
 _tags
 *.native
+*.cmi
+*.cmo
+test

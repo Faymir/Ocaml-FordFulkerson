@@ -25,5 +25,5 @@ val print_path: path  -> unit
 val update_path: int graph -> path -> int -> int graph
 val min_flow: int graph -> path -> int
 val ford_fulkerson:  string graph -> id -> id -> int
-val circulation_demand: string graph -> id -> id -> (int * path)list
+val circulation_demand: string graph -> id -> id -> int(*(int * path)list*)
 val print_paths: (int * path)list -> unit 

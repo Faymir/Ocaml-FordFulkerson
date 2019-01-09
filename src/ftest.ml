@@ -19,8 +19,9 @@ let () =
   (* Open file *)
   let graph = Gfile.from_txt_file infile in 
   let () = Gfile.export outfile graph source sink in
-  let alpha = circulation_demand graph source sink in 
-  print_paths alpha;
+  let _ = circulation_demand graph source sink in 
+  let alpha = ford_fulkerson graph source sink in 
+  Printf.printf "max_flow = %d\n" alpha;;
   ()
 
 
