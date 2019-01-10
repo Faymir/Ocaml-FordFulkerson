@@ -4,7 +4,7 @@ type path = id list
 
 
   (*  
-        PRINCIPE DE FONCTIONNEMENT DE MA RECHERCHE DE CHEMIN
+        PRINCIPE DE FONCTIONNEMENT DE LA RECHERCHE DE CHEMIN
       
       - on quitte si on trouve la solution ou si on n'a plus de noeuds à exporer
       - Deux listes: noeux explorés, noeuds non explorés

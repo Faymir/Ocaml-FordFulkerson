@@ -1,6 +1,6 @@
 
 open OUnit2;;
-let folder = "../in/test/";;
+let folder = "../in/";;
 let files = ["graph1.txt";    "graph2.txt";     "graph3.txt";     "graph4.txt"];;
 (* check flow [(from node, to node, right result flow):: _]  *)
 let paths = [("0", "3", 6);   ("0", "7", 5);    ("0", "7", 31);   ("0", "5", 14)];; 
@@ -34,4 +34,4 @@ graph4 (0 - 5)-> flow = 14
                 let () = run_test_tt_main (file >:: test) in
                 make_tests choice rest_graph rest_files rest_path;;
 
-let () = make_tests 1 graphs files paths;;
+let () = make_tests 2 graphs files paths;;
