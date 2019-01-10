@@ -34,4 +34,4 @@ graph4 (0 - 5)-> flow = 14
                 let () = run_test_tt_main (file >:: test) in
                 run_tests choice rest_graph rest_files rest_path;;
 
-let () = run_tests 2 graphs files paths;;
+let () = run_tests 1 graphs files paths;;
