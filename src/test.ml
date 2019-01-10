@@ -24,7 +24,7 @@ graph4 (0 - 5)-> flow = 14
   else if choice = 2 then
     assert_equal ~printer:string_of_int flow (Algo.circulation_demand graph source sink);;
 
- let rec make_tests choice graphs files paths =
+ let rec run_tests choice graphs files paths =
  match (graphs, paths, files) with
  | ([], _, _) -> ()
  | (_, [], _) -> ()
@@ -32,6 +32,6 @@ graph4 (0 - 5)-> flow = 14
  | (graph::rest_graph, (source, sink, flow) :: rest_path, file::rest_files) -> 
             let test test_ctxt = get_assert choice flow graph source sink in
                 let () = run_test_tt_main (file >:: test) in
-                make_tests choice rest_graph rest_files rest_path;;
+                run_tests choice rest_graph rest_files rest_path;;
 
-let () = make_tests 2 graphs files paths;;
+let () = run_tests 2 graphs files paths;;
