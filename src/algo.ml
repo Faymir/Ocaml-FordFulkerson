@@ -2,7 +2,7 @@ open Graph
 open Printf
 type path = id list
 
-(*Utilitaire:  Un find customisé qui retourne la valeur à recherchée si 
+(*Utilitaire:  Un find customisé qui retourne la valeur à rechercher si 
 celle ci est trouvée ou une chaine vide dans le cas contraire*)
 let myfind id mylist =  try (List.find (fun x -> x = id) mylist) with Not_found -> ""
 
@@ -15,7 +15,7 @@ let myfind id mylist =  try (List.find (fun x -> x = id) mylist) with Not_found 
     else
       true  (* Oui cette valeur ne se trouve dans aucune liste donc ajoute la dans la nouvelle liste filtrée*)
 
-  (*DEBOGAGE: Juste une fonciton pour afficher les liste*)
+  (*DEBOGAGE: Juste une fonciton pour afficher les listes*)
   let print_list l str = 
 
     printf "%s" str; List.iter (fun x -> Printf.printf  " %s <= " x) l; printf "%s" str
@@ -38,11 +38,11 @@ let myfind id mylist =  try (List.find (fun x -> x = id) mylist) with Not_found 
                           let successors = out_arcs graph first in
                             let successors = List.filter (fun (x,_) -> myfilter x notyet (first :: explored))  successors in
                             (*Ci dessus On filtre la liste des successeurs du noeuds actuel en
-                             retirant les noeuds déjà exploré ou ceux déjà présent dans la liste
+                             retirant les noeuds déjà explorés ou ceux déjà présents dans la liste
                               des noeuds à explorer*)
                               let notyet = List.append (List.map (fun (x,_) -> x) successors) (":" :: notyet) in
                                 (*ci-dessus on marque chaque subdivision en noeud avec un caratere : pour pouvoir
-                                 y revenir et supprimer un mauvais chemin: utilisé au niveau de la ligne 3 de cette fonction*)
+                                 y revenir et supprimer un mauvais chemin: utilisé au niveau de la ligne 4 de cette fonction*)
                                 boucle graph notyet (first :: explored) goal (first :: result)
 
 (*Utilitaire: trouver et retourner un chemin*)   
@@ -53,6 +53,7 @@ let print_path path =
  let path = List.rev path in
   List.iter (fun x -> Printf.printf  "\t-> %s" x) path;   Printf.printf "\n"
 
+(* Afficher les chemins avec les flots correspondants *)
 let rec print_paths paths = 
   let acu = 0 and paths = List.rev paths in
   Printf.printf "Total flow: %d\n" 
@@ -61,6 +62,7 @@ let rec print_paths paths =
       else acu + flow)
     acu paths)
 
+(* Fontion utiliser pour mettre à jour le graph des arcs inverses et le graph des arcs "normaux" *)
 let rec update_path_inverse graph graph2 path minval=
   match path with
   | [] -> (graph,graph2)
