@@ -21,7 +21,7 @@ of course you need to have `OCaml` and `Opam` installed
 ### To run existing tests
 1. Go to the src folder
 
-2. run one of the following functions
+2. run one of the following commands
 
 `.test1`  for Max Flow problem
 
