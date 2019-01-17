@@ -19,10 +19,13 @@ of course you need to have `OCaml` and `Opam` installed
 ## Tests
 
 ### To run existing tests
+1. Go to the src folder
 
-`./src/test1`  for Max Flow problem
+2. run one of the following functions
 
-`./src/test2` for Circulation demand: this one print paths that can be used and the flow of each one
+`.test1`  for Max Flow problem
+
+`.test2` for Circulation demand: this one print paths that can be used and the flow of each one
 
 ### Create New Tests
 
